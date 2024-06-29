@@ -14,7 +14,7 @@ import { Link, useRouter } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
 
 const SignUp = () => {
-  const [countryCode, setCountryCode] = useState("+380");
+  const [countryCode, setCountryCode] = useState("+44");
   const [phoneNumber, setPhoneNumber] = useState("");
   const keyboardVetricalOffset = Platform.OS === "ios" ? 80 : 0;
   const router = useRouter();
@@ -27,6 +27,8 @@ const SignUp = () => {
       await signUp!.create({
         phoneNumber: fullPhoneNumber,
       });
+      signUp!.preparePhoneNumberVerification();
+
       router.push({
         pathname: "/verify/[phone]",
         params: { phone: fullPhoneNumber },
@@ -79,7 +81,7 @@ const SignUp = () => {
         <TouchableOpacity
           style={[
             defaultStyles.pillButton,
-            phoneNumber !== "" ? styles.enabled : styles.enabled,
+            phoneNumber !== "" ? styles.enabled : styles.disabled,
             { marginBottom: 20 },
           ]}
           onPress={onSignup}
